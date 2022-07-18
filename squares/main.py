@@ -2,6 +2,9 @@ def number_of_squares(array: list) -> int:
 
     set_squares = set()
     for elem in array:
+        if elem[0] > elem[1]:
+            elem = [elem[1], elem[0]]
+            set_squares.add(tuple(elem))
         set_squares.add(tuple(elem))
 
     n = 1
@@ -81,3 +84,5 @@ if __name__ == '__main__':
                              [8, 12], [10, 11], [10, 14], [12, 16], [14, 15], [15, 16]]) == 3)
     print(number_of_squares([[1, 2], [2, 3], [3, 4], [1, 5], [4, 8], [6, 7], [5, 9], [6, 10], [7, 11], [8, 12],
                              [9, 13], [10, 11], [12, 16], [13, 14], [14, 15], [15, 16]]) == 2)
+    print(number_of_squares(
+        [[16, 15], [16, 12], [15, 11], [11, 12], [11, 10], [10, 14], [9, 10], [14, 13], [13, 9], [15, 14]]) == 3)
