@@ -51,13 +51,12 @@ class Friend:
     """
 
     def __init__(self, name: str):
+        self.invite_time = None
+        self.invite_place = None
         self.name = name
 
     def __str__(self):
         return f'{self.name}'
-
-    invite_place: str = None
-    invite_time: str = None
 
     @abstractmethod
     def show_invite(self) -> str:
