@@ -37,8 +37,8 @@ def number_of_squares(array: list) -> int:
 
     # собираем средние квадраты на основе найденных сторон
     for elem in filter_side_square:
-        if create_middle_square(elem, filter_side_square):
-            all_square.append(create_middle_square(elem, filter_side_square))
+        if create_middle_square(elem, filter_side_square, set_squares):
+            all_square.append(create_middle_square(elem, filter_side_square, set_squares))
             count_square += 1
 
     return count_square
@@ -51,14 +51,19 @@ def search_middle_side(side, set_squares):
             return one_side
 
 
-def create_middle_square(side, filter_side_square):
+def create_middle_square(side, filter_side_square, set_squares):
     for elem in filter_side_square:
         if side[0] + 8 == elem[0] and side[1] + 8 <= 16:
-            a = side
-            b = (side[1], side[1] + 8)
-            c = (side[0], side[0] + 8)
-            d = (side[0] + 8, side[1] + 8)
-            return {a, b, c, d}
+            all_edge = {(side[0], side[0] + 1), (side[0] + 1, side[1]),
+                        (side[0], side[0] + 4), (side[0] + 4, side[0] + 8),
+                        (side[0] + 8, (side[0] + 8) + 1), ((side[0] + 8) + 1, (side[0] + 8) + 2),
+                        (side[1], side[1] + 4), (side[1] + 4, side[1] + 8)}
+            if len(all_edge & set_squares) == 8:
+                a = side
+                b = (side[1], side[1] + 8)
+                c = (side[0], side[0] + 8)
+                d = (side[0] + 8, side[1] + 8)
+                return {a, b, c, d}
 
 
 def search_big_side(side, set_squares):
@@ -84,5 +89,7 @@ if __name__ == '__main__':
                              [8, 12], [10, 11], [10, 14], [12, 16], [14, 15], [15, 16]]) == 3)
     print(number_of_squares([[1, 2], [2, 3], [3, 4], [1, 5], [4, 8], [6, 7], [5, 9], [6, 10], [7, 11], [8, 12],
                              [9, 13], [10, 11], [12, 16], [13, 14], [14, 15], [15, 16]]) == 2)
-    print(number_of_squares(
-        [[16, 15], [16, 12], [15, 11], [11, 12], [11, 10], [10, 14], [9, 10], [14, 13], [13, 9], [15, 14]]) == 3)
+    print(number_of_squares([[16, 15], [16, 12], [15, 11], [11, 12], [11, 10], [10, 14], [9, 10], [14, 13], [13, 9],
+                             [15, 14]]) == 3)
+    print(number_of_squares([[1, 2], [2, 3], [3, 4], [1, 5], [4, 8], [6, 7], [5, 9], [6, 10], [7, 11], [8, 12],
+                             [9, 13], [10, 11], [12, 16], [13, 14], [14, 15], [15, 16], [2, 6], [5, 6]]) == 3)
