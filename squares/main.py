@@ -1,19 +1,16 @@
 def number_of_squares(array: list) -> int:
 
-    set_squares = set()
-    for elem in array:
-        if elem[0] > elem[1]:
-            elem = [elem[1], elem[0]]
-            set_squares.add(tuple(elem))
-        set_squares.add(tuple(elem))
+    set_squares = {tuple([elem[1], elem[0]]) if elem[0] > elem[1] else tuple(elem) for elem in array}
 
     n = 1
     count_square = 0
     all_square = []
     filter_side_square = []
 
-    # начинаем поиск с маленьких квадратов
+    # начинаем с перебора элементов в множестве
     for elem in set_squares:
+
+        # поиск маленьких квадратов
         a = (elem[0], elem[1])
         b = (elem[0] + n, elem[1] + n)
         c = (elem[0], elem[0] + n)
@@ -37,8 +34,9 @@ def number_of_squares(array: list) -> int:
 
     # собираем средние квадраты на основе найденных сторон
     for elem in filter_side_square:
-        if create_middle_square(elem, filter_side_square, set_squares):
-            all_square.append(create_middle_square(elem, filter_side_square, set_squares))
+        middle_square = create_middle_square(elem, filter_side_square, set_squares)
+        if middle_square:
+            all_square.append(middle_square)
             count_square += 1
 
     return count_square
@@ -47,8 +45,7 @@ def number_of_squares(array: list) -> int:
 def search_middle_side(side, set_squares):
     for elem in set_squares:
         if side[1] == elem[0] and (elem[1] - side[0] == 2):
-            one_side = (side[0], elem[1])
-            return one_side
+            return side[0], elem[1]
 
 
 def create_middle_square(side, filter_side_square, set_squares):
